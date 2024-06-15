@@ -31,6 +31,10 @@ kotlin {
     }
 
     sourceSets {
+        iosMain {
+            kotlin.srcDir("build/generated/ksp/metadata")
+        }
+
         androidMain.dependencies {
 
             // compose preview
@@ -114,4 +118,11 @@ dependencies {
 
     // room
     add("kspCommonMainMetadata", libs.room.compiler)
+    add("kspAndroid", libs.room.compiler)
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
 }
